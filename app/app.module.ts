@@ -6,11 +6,15 @@ import { HttpModule, JsonpModule } from '@angular/http';
 import { AppComponent }  from './app.component';
 import {SearchResultService} from "./result.service";
 
+import {InputTextModule} from 'primeng/primeng';
+import {DataTableModule,SharedModule} from 'primeng/primeng';
+
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule, JsonpModule
+    HttpModule, JsonpModule,
+    InputTextModule, DataTableModule, SharedModule
   ],
   declarations: [ AppComponent ],
   providers: [SearchResultService],
