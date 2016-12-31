@@ -4,10 +4,11 @@
 
 <input type="text" pInputText/>
 
-<p-dataTable [value]="results" [rows]="5" [paginator]="true">
-  <p-column field="id" header="#" [sortable]="true"></p-column>
+<p-dataTable [value]="results" [rows]="5" [paginator]="true" [globalFilter]="gb" #dt reorderableColumns="true"
+             [rowsPerPageOptions]="[5,10,20,30]" resizableColumns="true">
+  <p-column field="id" header="#" [sortable]="true" [filter]="true" filterPlaceholder="Search"></p-column>
   <p-column field="threadName" header="Thread name" [sortable]="true"></p-column>
-  <p-column field="filePath" header="File path" [sortable]="true"></p-column>
+  <p-column field="filePath" header="File path" [sortable]="true" [filter]="true" filterPlaceholder="Search" filterMatchMode="contains"></p-column>
   <p-column field="lineNumber" header="Line number" [sortable]="true"></p-column>
-  <p-column field="line" header="Line" [sortable]="true"></p-column>
+  <p-column field="line" header="Line" [sortable]="true" [filter]="true" filterPlaceholder="Search" filterMatchMode="contains"></p-column>
 </p-dataTable>
