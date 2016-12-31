@@ -9,7 +9,7 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class SearchResultService {
 
-  private resultUrl = 'http://localhost:8100/search_results/limit';  // URL to web api
+  private resultUrl = 'http://localhost:8100/search_results/limit/1000';  // URL to web api
 
   constructor(private http: Http) {}
 
