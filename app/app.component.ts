@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {SearchResult} from "./search_result.model";
 import {SearchResultService} from "./result.service";
 import {LazyLoadEvent} from "primeng/components/common/api";
+import {SearchResults} from "./search_results.model";
 
 @Component({
   selector: 'my-app',
@@ -9,23 +10,21 @@ import {LazyLoadEvent} from "primeng/components/common/api";
 })
 export class AppComponent  {
   name = 'FSUClient';
-  results: SearchResult[];
+  result: SearchResult[];
+  results: SearchResults;
   totalRecords: number;
 
   constructor(private sarchResultService: SearchResultService) {
-    this.totalRecords=19849;
   }
 
   ngOnInit(): void {
-    this.getResults(0, 5);
   }
 
-  getResults(first: number, rows: number): void {
-    this.sarchResultService.getResults(first, rows).then(results => this.results = results);
+  getResults(event: LazyLoadEvent): void {
+    this.sarchResultService.getResults(event).then(result => {this.results = result; this.result = result.results; this.totalRecords = result.count;});
   }
 
   loadLazy(event: LazyLoadEvent) {
-    console.log("first "+event.first+"; rows: "+event.rows);
-    this.getResults(event.first, event.rows);
+    this.getResults(event);
   }
 }

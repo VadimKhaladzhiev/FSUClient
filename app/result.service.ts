@@ -1,9 +1,9 @@
 import {Injectable} from "@angular/core";
-// import {Observable} from "rxjs";
 import {Http, Response} from "@angular/http";
-import {SearchResult} from "./search_result.model";
 
 import 'rxjs/add/operator/toPromise';
+import {SearchResults} from "./search_results.model";
+import {LazyLoadEvent} from "primeng/components/common/api";
 
 @Injectable()
 export class SearchResultService {
@@ -17,19 +17,11 @@ export class SearchResultService {
   //     .map((r: Response) => r.json().results as SearchResult[]);
   // }
 
-
-  // getResults(): SearchResult[] {
-  //   return SEARCH_RESULTS;
-  // }
-
-  // getResults(): Promise<SearchResult[]> {
-  //   return Promise.resolve(SEARCH_RESULTS);
-  // }
-
-  getResults(first: number, rows: number): Promise<SearchResult[]> {
-    return this.http.get(this.resultUrl+'?page='+(first/rows)+'&limit='+rows)
+  getResults(event: LazyLoadEvent): Promise<SearchResults> {
+    var page  = event.first/event.rows;
+    return this.http.get(this.resultUrl+`?page=${page}&limit=${event.rows}`)
       .toPromise()
-      .then(response => response.json().results as SearchResult[])
+      .then(response => response.json() as SearchResults)
       .catch(this.handleError);
   }
 
