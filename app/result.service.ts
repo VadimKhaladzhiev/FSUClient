@@ -18,8 +18,7 @@ export class SearchResultService {
   // }
 
   getResults(event: LazyLoadEvent): Promise<SearchResults> {
-    var page  = event.first/event.rows;
-    return this.http.get(this.resultUrl+`?page=${page}&limit=${event.rows}`)
+    return this.http.get(this.resultUrl+`?page=${event.first/event.rows}&limit=${event.rows}`)
       .toPromise()
       .then(response => response.json() as SearchResults)
       .catch(this.handleError);

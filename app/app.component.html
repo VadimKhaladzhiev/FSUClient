@@ -2,6 +2,10 @@
   {{name}}
 </h1>
 
+<input type="text" id="value" #date_pickup (keyup.enter)="datePicker.updateDate(date_pickup.value)" (blur)="datePicker.updateDate(date_pickup.value)"
+       [value]="datePicker.value | date:'yyyy-MM-dd'" name="value">
+<p>{{datePicker.value}}</p>
+
 <p-dataTable [value]="result" [rows]="5" [paginator]="true" [globalFilter]="gb" #dt reorderableColumns="true"
              [lazy]="true" [totalRecords]="totalRecords" (onLazyLoad)="loadLazy($event)"
              [rowsPerPageOptions]="[5,10,20,30]" resizableColumns="true">

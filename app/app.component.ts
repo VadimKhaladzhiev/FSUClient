@@ -14,7 +14,10 @@ export class AppComponent  {
   results: SearchResults;
   totalRecords: number;
 
+  datePicker: DatePicker;
+
   constructor(private sarchResultService: SearchResultService) {
+    this.datePicker = new DatePicker();
   }
 
   ngOnInit(): void {
@@ -26,5 +29,12 @@ export class AppComponent  {
 
   loadLazy(event: LazyLoadEvent) {
     this.getResults(event);
+  }
+}
+
+export class DatePicker{
+  value : Date = new Date();
+  updateDate(date: string) {
+    this.value = new Date(date);
   }
 }
