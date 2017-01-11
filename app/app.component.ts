@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import {SearchResult} from "./search_result.model";
 import {SearchResultService} from "./result.service";
 import {LazyLoadEvent} from "primeng/components/common/api";
-import {SearchResults} from "./search_results.model";
 
 @Component({
   selector: 'my-app',
@@ -11,7 +10,6 @@ import {SearchResults} from "./search_results.model";
 export class AppComponent  {
   name = 'FSUClient';
   result: SearchResult[];
-  results: SearchResults;
   totalRecords: number;
 
   datePicker: DatePicker;
@@ -20,16 +18,21 @@ export class AppComponent  {
     this.datePicker = new DatePicker();
   }
 
-  ngOnInit(): void {
-  }
-
   getResults(event: LazyLoadEvent): void {
-    this.sarchResultService.getResults(event).then(result => {this.results = result; this.result = result.results; this.totalRecords = result.count;});
+    this.sarchResultService.getResults(event)
+      .mapTo((result : any) => {console.log("dsfdsdf");});
+    this.sarchResultService.getResults(event)
+      .subscribe(
+        result => {this.result = result.results;this.totalRecords = result.count}, //Bind to view
+        err => {
+          console.log(err);
+        });
   }
 
   loadLazy(event: LazyLoadEvent) {
     this.getResults(event);
   }
+
 }
 
 export class DatePicker{

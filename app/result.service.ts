@@ -1,9 +1,9 @@
 import {Injectable} from "@angular/core";
 import {Http, Response} from "@angular/http";
 
-import 'rxjs/add/operator/toPromise';
 import {SearchResults} from "./search_results.model";
 import {LazyLoadEvent} from "primeng/components/common/api";
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class SearchResultService {
@@ -12,21 +12,30 @@ export class SearchResultService {
 
   constructor(private http: Http) {}
 
-  // getResults(first: number, rows: number): Observable<SearchResult[]> {
-  //   return this.http.get(this.resultUrl+'?page='+(first/rows)+'&limit='+rows)
-  //     .map((r: Response) => r.json().results as SearchResult[]);
-  // }
-
-  getResults(event: LazyLoadEvent): Promise<SearchResults> {
-    return this.http.get(this.resultUrl+`?page=${event.first/event.rows}&limit=${event.rows}`)
-      .toPromise()
-      .then(response => response.json() as SearchResults)
+  getResults(event: LazyLoadEvent): Observable<SearchResults> {
+    let url = this.resultUrl+`?page=${event.first/event.rows}&limit=${event.rows}`;
+    return this.http.get(url)
+      .map(this.extractData)
       .catch(this.handleError);
   }
 
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error); // for demo purposes only
-    return Promise.reject(error.message || error);
+  private extractData(res: Response) {
+    let body = res.json();
+    return body || { };
+  }
+
+  private handleError (error: Response | any) {
+    // In a real world app, we might use a remote logging infrastructure
+    let errMsg: string;
+    if (error instanceof Response) {
+      const body = error.json() || '';
+      const err = body.error || JSON.stringify(body);
+      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+    } else {
+      errMsg = error.message ? error.message : error.toString();
+    }
+    console.error(errMsg);
+    return Observable.throw(errMsg);
   }
 
 }
