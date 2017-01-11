@@ -20,8 +20,6 @@ export class AppComponent  {
 
   getResults(event: LazyLoadEvent): void {
     this.sarchResultService.getResults(event)
-      .mapTo((result : any) => {console.log("dsfdsdf");});
-    this.sarchResultService.getResults(event)
       .subscribe(
         result => {this.result = result.results;this.totalRecords = result.count}, //Bind to view
         err => {
